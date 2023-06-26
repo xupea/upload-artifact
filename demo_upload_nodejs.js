@@ -6,11 +6,9 @@ async function uploadFile(filePath, url) {
   try {
     const fileStream = fs.createReadStream(filePath);
     const formData = new FormData();
+    formData.append('arch', 'arm64');
+    formData.append('platform', 'mac');
     formData.append('file', fileStream);
-    formData.append('name', 'xupea');
-    // platform
-    // arch 
-    // version 0.0.1
 
     const response = await axios.post(url, formData, {
       headers: formData.getHeaders(),
