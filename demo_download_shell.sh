@@ -1,1 +1,0 @@
-curl http://localhost:3000/download/remote-assistance/mac/arm64 --output remote-assistance.zip --silent

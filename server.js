@@ -5,8 +5,12 @@ const multer = require("@koa/multer");
 const fs = require("fs");
 const path = require("path");
 
+require('dotenv').config();
+
 const app = new Koa();
 const router = new Router();
+
+const zipFileName = process.env.YOUDU_REMOTE_ASSISTANCE_ZIP_NAME;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -21,7 +25,7 @@ const storage = multer.diskStorage({
     cb(null, relativeDest); // 指定上传文件的保存路径
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // 保持原始文件名
+    cb(null, zipFileName); // 保持原始文件名
   },
 });
 
@@ -29,15 +33,14 @@ const upload = multer({ storage }); // note you can pass `multer` options here
 
 // add a route for uploading single files
 router.post("/upload-single-file", upload.single("file"), (ctx) => {
-  //   console.log("ctx.request.file", ctx.request.file);
-  //   console.log("ctx.file", ctx.file);
   console.log("ctx.request.body", ctx.request.body);
   ctx.body = "done";
 });
 
-router.get("/download/remote-assistance/:platform/:arch", async (ctx) => {
+router.get(`/download/${zipFileName}/:platform/:arch`, async (ctx) => {
   const { platform, arch } = ctx.params;
-  const path = `uploads/${platform}/${arch}/IMG_5814.jpg`;
+  const path = `uploads/${platform}/${arch}/${zipFileName}.zip`;
+  console.log(path);
   ctx.attachment(path);
   await send(ctx, path);
 });
