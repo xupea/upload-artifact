@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
     cb(null, relativeDest); // 指定上传文件的保存路径
   },
   filename: (req, file, cb) => {
-    cb(null, zipFileName); // 保持原始文件名
+    cb(null, `${zipFileName}.zip`); // 保持原始文件名
   },
 });
 
